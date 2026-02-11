@@ -3,12 +3,11 @@ spring:
     name: prod-hive-auth-service
 
   datasource:
-
-    url: jdbc:postgresql://ep-nameless-base-aicp428n-pooler.c-4.us-east-1.aws.neon.tech:5432/neondb?sslmode=require
+    url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
-    username: neondb_owner
-    password: npg_9wO7vgntzMuc
-  
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,7 +18,7 @@ spring:
 
 app:
   jwt:
-    secret: "CHANGE_ME_LATER_CHANGE_ME_LATER_32_CHARACTERS"
+    secret: ${JWT_SECRET}
 
 server:
-  port: 8081
+  port: ${PORT:8081}
