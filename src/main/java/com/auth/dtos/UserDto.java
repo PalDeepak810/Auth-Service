@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,13 +21,13 @@ public class UserDto {
     private UUID id;
     private String email;
     private String name;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private boolean enable = true;
+
+    private Boolean enable = true;
     private Instant created_at = Instant.now();
     private Instant updated_at = Instant.now();
-    private Provider provider=Provider.LOCAL;
-
-
+    private Provider provider = Provider.LOCAL;
     private Set<RoleDto> roles = new HashSet<>();
-
 }

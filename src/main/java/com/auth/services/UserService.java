@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
     public UserDto createUser(UserDto userDto){
         if(userDto.getEmail()==null||userDto.getEmail().isBlank()){
             throw new EmailNotFoundException("Email is required");
@@ -32,6 +34,7 @@ public class UserService {
         //Mapping dto to entity
         User user = modelMapper.map(userDto, User.class);
 
+        user.setEnable(true);
         //Setting provider
         user.setProvider(userDto.getProvider()!=null?userDto.getProvider(): Provider.LOCAL);
 
@@ -66,7 +69,7 @@ public class UserService {
         if(userDto.getName()!=null) existinguser.setName(userDto.getName());
         if(userDto.getProvider()!=null) existinguser.setProvider(userDto.getProvider());
         //todo: hashing based encoded remaining
-        if(userDto.getPassword()!=null) existinguser.setPassword(userDto.getPassword());
+        if(userDto.getPassword()!=null) existinguser.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User updateduser=userRepository.save(existinguser);
 
